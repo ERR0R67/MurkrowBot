@@ -6,7 +6,7 @@ from datetime import datetime
 import os
 
 # Load Token and target user (it just targets porygon but I added the variable for testing)
-TOKEN = 'Wouldn't You Like to Know Weatherboy'
+TOKEN = 'WouldntYouliketoKnowWeatherboy'
 Target_users = 204255221017214977
 GuildID = 610951535526019112
 
@@ -107,3 +107,4 @@ async def gift(interaction: discord.Interaction, channel1: discord.TextChannel, 
 Client.tree.add_command(gift)
 
 Client.run(token=TOKEN)
+
