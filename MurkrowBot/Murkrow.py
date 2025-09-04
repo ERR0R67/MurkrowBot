@@ -6,9 +6,9 @@ from datetime import datetime
 import os
 
 # Load Token and target user (it just targets porygon but I added the variable for testing)
-TOKEN = 'WouldntYouliketoKnowWeatherboy'
-Target_users = 204255221017214977
-GuildID = 610951535526019112
+TOKEN = 'WouldntYouLikeToKnowWeatherboy'
+Target_users = 204255221017214977 # This is YAGPDB's user ID
+GuildID = 610951535526019112      # This is the server ID number for FLMG
 
 # Bot Setup
 intents = discord.Intents.default()
@@ -39,7 +39,7 @@ async def on_ready():
 )
 
 # Command for pulling messages into text file
-#@Client.tree.command(name='gift')
+#@Client.tree.command(name='gift') I don't remember why I commented this or exactly what it does but the bot works without it so whatever
 async def gift(interaction: discord.Interaction, channel1: discord.TextChannel, channel2: discord.TextChannel, start_time: str):
     # Make input date a usable time format
     try:
@@ -64,27 +64,28 @@ async def gift(interaction: discord.Interaction, channel1: discord.TextChannel, 
     commandcount = 0
     
     try:
-        # Open file for appending, I don't know why encoding is necessary but ever similar command I can find uses it so I'm using it
+        # Open file for appending, I don't know why encoding is necessary but every similar command I can find uses it so I'm using it
         with open(filename, 'w', encoding='utf-8') as f:
             for channel in channels:   
                 async for msg in channel.history(after=Start, oldest_first=True, limit=None):
-                    if msg.author.id == Target_users:
-                        embed = msg.embeds[0]
+                    if msg.author.id == Target_users:  # The above loops just target all messages from target user in both selected channels
+                        embed = msg.embeds[0]          # Making embeds readable because Chou put effort into the embeds
 
-                        # Title contains username and scavenge line
+                        # Title contains username and scavenge line, skips all cooldown notifs
                         title = embed.title or ""
                         activity = ['went scavenging', 'shook the berry tree']
                         matching_phrase = next((phrase for phrase in activity if phrase in title), None)
                         if not matching_phrase:
                             continue
 
-                        # Extract username
+                        # Extract username from message
                         scavenger = title.split(matching_phrase)[0].strip()
 
-                        # Description for item pulls
+                        # Description extracts items from message
                         description = embed.description or ""
                         lines = description.splitlines()
 
+                        # This loop pulls each item line from the description and formats the data into a usable unbelievaboat command
                         for line in lines:
                             openings = ['You got a ', 'You found a ']
                             for opening in openings:
@@ -105,6 +106,4 @@ async def gift(interaction: discord.Interaction, channel1: discord.TextChannel, 
 
 # Start Bot
 Client.tree.add_command(gift)
-
 Client.run(token=TOKEN)
-
